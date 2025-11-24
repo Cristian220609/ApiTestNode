@@ -1,0 +1,36 @@
+### ALL
+GET http://localhost:3000/movies
+
+### FOR ID
+GET http://localhost:3000/movies/id/5ad1a235-0d9c-410a-b32b-220d91689a08
+
+### FOR TITLE
+GET http://localhost:3000/movies/title/The%20Dark%20Knight
+
+###
+GET http://localhost:3000/movies?limit=10
+
+###
+GET http://localhost:3000/movies?genre=Drama
+
+###
+POST http://localhost:3000/movies
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "year": 2010,
+  "director": "Christopher Nolan",
+  "duration": 148,
+  "poster": "https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg",
+  "genre": ["Action", "Sci-Fi", "Thriller"],
+  "rate": 8.8
+}
+
+###
+PATCH http://localhost:3000/movies/id/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+Content-Type: application/json
+
+{
+  "rate": 9.0
+}
