@@ -1,10 +1,9 @@
-import { fa } from 'zod/locales'
-import movies from '../movies.json' with { type: 'json' }
-import { validate, validatePart } from '../schemas/movies.js'
+import movies from './movies.json' with { type: 'json' }
+import { validate, validatePart } from '../../schemas/movies.js'
 import crypto from 'crypto'
 
 export class MovieModel {
-  static async getAll ( { genre }) {
+  static async getAll ({ genre }) {
     if (genre) {
       return movies.filter(movie => {
         movie.genre === genre
