@@ -1,34 +1,36 @@
-import { MovieModel } from '../models/sql/movie.js'
-
 export class MovieController {
-  static async getAll (req, res) {
+  constructor ({ movieModel }) {
+    this.movieModel = movieModel
+  }
+
+  getAll = async (req, res) => {
     const { genre } = req.query
-    const movies = await MovieModel.getAll({ genre })
+    const movies = await this.movieModel.getAll({ genre })
     res.json(movies)
   }
 
-  static async getByTitle (req, res) {
+  getByTitle = async (req, res) => {
     const { title } = req.params
-    const movie = await MovieModel.getByTitle(title)
+    const movie = await this.movieModel.getByTitle(title)
     if (movie) return res.json(movie)
     res.status(404).send('Movie not foundxd')
   }
 
-  static async getById (req, res) {
+  getById = async (req, res) => {
     const { id } = req.params
-    const movie = await MovieModel.getById(id)
+    const movie = await this.movieModel.getById(id)
     if (movie) return res.json(movie)
     return res.status(404).send('Movie not found')
   }
 
-  static async create (req, res) {
-    const result = await MovieModel.create(req.body)
+  create = async (req, res) => {
+    const result = await this.movieModel.create(req.body)
     if (result) return res.status(400).send('Invalid request body')
     res.status(201).json(result)
   }
 
-  static async update (req, res) {
-    const result = await MovieModel.update(req.body, req.params.id)
+  update = async (req, res) => {
+    const result = await this.movieModel.update(req.body, req.params.id)
     res.json(result)
   }
 }

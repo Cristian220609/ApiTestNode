@@ -1,35 +1,36 @@
 // import { validate, validatePart } from '../../schemas/movies.js'
 // import crypto from 'crypto'
-import { MySQLConnection } from './mysql.js'
+
+import mysql from 'mysql2/promise'
+
+const config = {
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'testbd'
+}
+
+const connection = await mysql.createConnection(config)
 
 export class MovieModel {
   static async getAll ({ genre }) {
-    const db = new MySQLConnection()
-    await db.connect()
-    try {
-      let SQLquery = 'SELECT * FROM test'
-      if (genre) {
-        SQLquery += ' WHERE genre = ?'
-        const rows = await db.query(SQLquery, [genre])
-        return rows
-      } else {
-        const rows = await db.query(SQLquery)
-        return rows
-      }
-    } catch (error) {
-      console.error('Error al obtener las películas:', error.message)
-      throw new Error('No se pudieron obtener las películas')
-    } finally {
-      await db.close()
+    if (genre) {
+      const query = 'SELECT movies.*, genre.* FROM movies JOIN movie_genres ON movies.id = movie_genres.movie_id JOIN genre ON movie_genres.genre_id = genre.id WHERE genre.name = ?'
+      const [movies] = await connection.query(query, genre)
+      return movies
     }
+    const [movies] = await connection.query('SELECT * FROM movies')
+    return movies
   }
 
   static async getByTitle (title) {
-
+    const [movies] = await connection.query('SELECT * FROM movies WHERE title = ?', title)
+    return movies
   }
 
   static async getById (id) {
-
+    const [movies] = await connection.query('SELECT * FROM movies WHERE id = ?', id)
+    return movies
   }
 
   static async create (movieData) {
